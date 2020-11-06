@@ -3,9 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/bottomMenu"
-    android:paddingTop="8dp"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:paddingTop="8dp">
 
     <LinearLayout
         android:id="@+id/manager_sound_original"
@@ -80,6 +80,9 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/seekbar_panel"
             android:layout_centerInParent="true"
+            android:ellipsize="end"
+            android:maxLength="100"
+            android:maxLines="1"
             tools:text="Current track" />
     </RelativeLayout>
 

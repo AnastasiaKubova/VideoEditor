@@ -56,6 +56,10 @@ class MainVideoPanel: BaseFragment() {
             data?.data?.let {
                 changeVideoListener?.onSelectVideo(it)
             }
+        } else if (requestCode == VideoPicker.PICK_VIDEO && resultCode == AppCompatActivity.RESULT_OK) {
+            if (data?.data == null) {
+                return
+            }
         }
     }
 
@@ -92,6 +96,7 @@ class MainVideoPanel: BaseFragment() {
 
     private fun showBottomSheetDialog() {
         dialogView.findViewById<TextView>(R.id.select_video).setOnClickListener {
+            VideoPicker.loadVideoFromGallery(this)
             dialog.cancel()
         }
         dialogView.findViewById<TextView>(R.id.create_video).setOnClickListener {

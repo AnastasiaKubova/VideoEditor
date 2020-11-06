@@ -1,6 +1,5 @@
 package com.example.videoeditor.util
 
-import android.net.Uri
 import android.os.Environment
 import android.text.TextUtils
 import com.example.videoeditor.enum.FileType
@@ -12,7 +11,6 @@ import java.net.URI
 object FilePicker {
 
     val rootFolder = "system"
-
     var currentFolderPath: URI = Environment.getRootDirectory().toURI()
         private set
 
@@ -43,13 +41,6 @@ object FilePicker {
         val file = File(currentFolderPath.path)
         currentFolderPath = URI.create(file.parentFile.absolutePath)
         return getFilesFromDirectory(currentFolderPath)
-    }
-
-    fun removeAudioFile(uri: Uri) {
-        val file = File(uri.path)
-        if (file.exists() && file.isFile) {
-            file.delete()
-        }
     }
 
     private fun getFilesFromDirectory(uri: URI): MutableList<FileData> {

@@ -2,14 +2,30 @@ package com.example.videoeditor.ui.fragment.picker.audio
 
 import android.os.Bundle
 import android.view.*
+import androidx.activity.addCallback
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
-import com.example.videoeditor.MainActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.videoeditor.R
 import com.example.videoeditor.model.FileData
 import com.example.videoeditor.ui.BaseFragment
 
 class AudioPickerFragment: BaseFragment(), AudioPickerHolder.AudioPickerItemListener,
-    BaseFragment.ConfirmationDialogListener, MainActivity.BackPressListener {
+    BaseFragment.ConfirmationDialogListener {
+
+    private lateinit var audioPickerRecyclerView: RecyclerView
+    private lateinit var audioPickerAdapter: RecyclerView.Adapter<*>
+    private lateinit var viewManager: RecyclerView.LayoutManager
+    private val viewModel by viewModels<AudioPickerViewModel>()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        val callback = requireActivity().onBackPressedDispatcher.addCallback {
+            onBackPressed()
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -20,13 +36,20 @@ class AudioPickerFragment: BaseFragment(), AudioPickerHolder.AudioPickerItemList
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        initObservers()
 
         /* Init menu. */
         changeOptionMenuPanel(true, resources.getString(R.string.select_audio))
+        initList()
+        viewModel.updateFileList()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
+            android.R.id.home -> {
+                onBackPressed()
+                true
+            }
             R.id.edit_video -> {
                 showConfirmationDialog()
                 true
@@ -42,23 +65,16 @@ class AudioPickerFragment: BaseFragment(), AudioPickerHolder.AudioPickerItemList
 
     override fun onResume() {
         super.onResume()
-        MainActivity.backPressListener = this
         confirmationDialogListener = this
     }
 
     override fun onPause() {
         super.onPause()
-        MainActivity.backPressListener = null
         confirmationDialogListener = null
     }
 
     override fun onAudioPickerSelected(item: FileData) {
 
-    }
-
-    override fun onBackPressed() {
-        findNavController().popBackStack()
-        findNavController().navigate(R.id.soundVideoPanel)
     }
 
     override fun onPositiveButtonClick() {
@@ -67,5 +83,31 @@ class AudioPickerFragment: BaseFragment(), AudioPickerHolder.AudioPickerItemList
 
     override fun onNegativeButtonClick() {
         onBackPressed()
+    }
+
+    private fun onBackPressed() {
+        findNavController().popBackStack()
+        findNavController().navigate(R.id.mainVideoPanel)
+    }
+
+    private fun initObservers() {
+        val audioList = Observer<MutableList<FileData>> { list ->
+            updateAdapter(list)
+        }
+        viewModel.audioList.observe(requireActivity(), audioList)
+    }
+
+    private fun updateAdapter(list: MutableList<FileData>) {
+        (audioPickerAdapter as AudioPickerAdapter).items = list
+        audioPickerAdapter.notifyDataSetChanged()
+    }
+
+    private fun initList() {
+        viewManager = LinearLayoutManager(activity)
+        audioPickerAdapter = AudioPickerAdapter(mutableListOf(), this)
+        audioPickerRecyclerView = requireActivity().findViewById<RecyclerView>(R.id.audio_play_list).apply {
+            layoutManager = viewManager
+            adapter = audioPickerAdapter
+        }
     }
 }

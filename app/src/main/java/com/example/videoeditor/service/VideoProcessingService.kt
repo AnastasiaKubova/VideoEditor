@@ -6,12 +6,9 @@ import android.media.MediaExtractor
 import android.media.MediaMuxer
 import android.os.Environment
 import android.util.Log
-import android.widget.Toast
 import androidx.core.app.JobIntentService
 import java.io.File
-import java.lang.Exception
 import java.nio.ByteBuffer
-
 
 class VideoProcessingService: JobIntentService() {
 

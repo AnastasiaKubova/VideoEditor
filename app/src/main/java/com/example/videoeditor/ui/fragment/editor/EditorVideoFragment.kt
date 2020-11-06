@@ -3,20 +3,19 @@ package com.example.videoeditor.ui.fragment.editor
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
-import com.example.videoeditor.MainActivity
 import com.example.videoeditor.R
 import com.example.videoeditor.ui.BaseFragment
+import com.example.videoeditor.ui.panel.sound.SoundVideoPanel
 import kotlinx.android.synthetic.main.editor_fragment.*
 import kotlinx.android.synthetic.main.video_controls.*
 
 class EditorVideoFragment: BaseFragment(),
-    BaseFragment.ChangeVideoListener {
+    BaseFragment.ChangeVideoListener, SoundVideoPanel.OpenAudioPickerListener {
 
     private val viewModel by viewModels<EditorVideoViewModel>()
 
@@ -47,11 +46,11 @@ class EditorVideoFragment: BaseFragment(),
     override fun onResume() {
         super.onResume()
         changeVideoListener = this
+        SoundVideoPanel.openEditPickerListener = this
     }
 
-    override fun onPause() {
-        super.onPause()
-        confirmationDialogListener = null
+    override fun onOpenAudioPickerListener() {
+        findNavController().navigate(R.id.audioPickerFragment)
     }
 
     private fun initObservers() {
