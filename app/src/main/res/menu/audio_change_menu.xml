@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item android:id="@+id/edit_video"
+        android:icon="@drawable/apply"
+        android:title="@string/apply"
+        app:showAsAction="ifRoom" />
+
+    <item android:id="@+id/pickup_file_video"
+        android:icon="@drawable/sound_file"
+        android:title="@string/select_audio"
+        app:showAsAction="ifRoom" />
+</menu>

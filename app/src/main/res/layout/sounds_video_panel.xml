@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/bottomMenu"
+    android:paddingTop="8dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:id="@+id/manager_sound_original"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/bottom_menu_size"
+        android:layout_marginBottom="8dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/manager_selected_sound_original"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent">
+
+        <TextView
+            style="@style/textSoundChangePanel"
+            android:layout_width="@dimen/menu_bottom_sound_text_width"
+            android:layout_height="wrap_content"
+            android:text="@string/original_track" />
+
+        <androidx.appcompat.widget.AppCompatSeekBar
+            android:id="@+id/seekbar_sound_original"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/menu_bottom_seek_padding_right" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/manager_selected_sound_original"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/bottom_menu_size"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent">
+
+        <RelativeLayout
+            android:id="@+id/seekbar_panel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/text_of_selected_sound"
+                style="@style/textSoundChangePanel"
+                android:layout_width="@dimen/menu_bottom_sound_text_width"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerInParent="true"
+                android:text="@string/selected_track" />
+
+            <androidx.appcompat.widget.AppCompatSeekBar
+                android:id="@+id/seekbar_sound_selected"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_toLeftOf="@+id/clear_sound"
+                android:layout_toRightOf="@+id/text_of_selected_sound" />
+
+            <ImageView
+                android:id="@+id/clear_sound"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerInParent="true"
+                android:layout_marginRight="8dp"
+                android:src="@drawable/clear" />
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/current_selected_track"
+            style="@style/textSelectedTrackChangePanel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/seekbar_panel"
+            android:layout_centerInParent="true"
+            tools:text="Current track" />
+    </RelativeLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

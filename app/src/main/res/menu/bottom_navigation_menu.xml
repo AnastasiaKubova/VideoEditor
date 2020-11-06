@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/clip_video"
+        android:enabled="true"
+        android:icon="@drawable/clip"
+        android:title="@string/clip_video"/>
+    <item
+        android:id="@+id/edit_sound"
+        android:enabled="true"
+        android:icon="@drawable/sound"
+        android:title="@string/edit_sound"/>
+
+    <item
+        android:id="@+id/edit_content"
+        android:enabled="true"
+        android:icon="@drawable/time"
+        android:title="@string/edit_content"/>
+</menu>

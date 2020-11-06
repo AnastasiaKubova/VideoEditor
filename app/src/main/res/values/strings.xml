@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">VideoEditor</string>
+    <string name="setting">Settings</string>
+    <string name="apply">Apply</string>
+    <string name="select_video">Select video</string>
+    <string name="create_video">Create video</string>
+    <string name="save_video">Save video</string>
+    <string name="clip_video">Clip video</string>
+    <string name="edit_sound">Edit sound</string>
+    <string name="edit_content">Edit content</string>
+    <string name="edit_video">Video editor</string>
+    <string name="menu">Menu</string>
+    <string name="select_audio">Select audio</string>
+    <string name="original_track">Original</string>
+    <string name="selected_track">Selected</string>
+</resources>

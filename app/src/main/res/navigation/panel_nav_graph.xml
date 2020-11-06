@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/panel_nav_graph"
+    app:startDestination="@id/mainVideoPanel">
+
+    <fragment
+        android:id="@+id/cutVideoPanel"
+        android:name="com.example.videoeditor.ui.panel.cut.CutVideoPanel"
+        android:label="CutVideoPanel" >
+        <action
+            android:id="@+id/action_cutVideoPanel_to_mainVideoPanel"
+            app:destination="@id/mainVideoPanel" />
+    </fragment>
+    <fragment
+        android:id="@+id/effectVideoPanel"
+        android:name="com.example.videoeditor.ui.panel.effect.EffectVideoPanel"
+        android:label="EffectVideoPanel" >
+        <action
+            android:id="@+id/action_effectVideoPanel_to_mainVideoPanel"
+            app:destination="@id/mainVideoPanel" />
+    </fragment>
+    <fragment
+        android:id="@+id/soundVideoPanel"
+        android:name="com.example.videoeditor.ui.panel.sound.SoundVideoPanel"
+        android:label="SoundVideoPanel" >
+        <action
+            android:id="@+id/action_soundVideoPanel_to_mainVideoPanel"
+            app:destination="@id/mainVideoPanel" />
+    </fragment>
+    <fragment
+        android:id="@+id/mainVideoPanel"
+        android:name="com.example.videoeditor.ui.panel.main.MainVideoPanel"
+        android:label="MainVideoPanel" >
+        <action
+            android:id="@+id/action_mainVideoPanel_to_cutVideoPanel"
+            app:destination="@id/cutVideoPanel" />
+        <action
+            android:id="@+id/action_mainVideoPanel_to_effectVideoPanel"
+            app:destination="@id/effectVideoPanel" />
+        <action
+            android:id="@+id/action_mainVideoPanel_to_soundVideoPanel"
+            app:destination="@id/soundVideoPanel" />
+    </fragment>
+</navigation>

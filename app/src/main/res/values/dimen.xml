@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="bottom_menu_size">52dp</dimen>
+    <dimen name="menu_bottom_sheet_text_size">52dp</dimen>
+    <dimen name="menu_bottom_sound_text_width">90dp</dimen>
+    <dimen name="menu_bottom_seek_padding_right">32dp</dimen>
+
+    <dimen name="menu_bottom_effect_image_size">36dp</dimen>
+</resources>
