@@ -57,8 +57,8 @@ class MainVideoPanel: BaseFragment() {
                 changeVideoListener?.onSelectVideo(it)
             }
         } else if (requestCode == VideoPicker.PICK_VIDEO && resultCode == AppCompatActivity.RESULT_OK) {
-            if (data?.data == null) {
-                return
+            data?.data?.let {
+                changeVideoListener?.onSelectVideo(it)
             }
         }
     }

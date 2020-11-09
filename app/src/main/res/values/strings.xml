@@ -13,4 +13,5 @@
     <string name="select_audio">Select audio</string>
     <string name="original_track">Original</string>
     <string name="selected_track">Selected</string>
+    <string name="selected_audio_track">Audio track is selected.</string>
 </resources>

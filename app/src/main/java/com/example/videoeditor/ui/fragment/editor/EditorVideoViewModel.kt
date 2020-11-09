@@ -38,14 +38,14 @@ class EditorVideoViewModel : ViewModel() {
         return player
     }
 
-    fun pauseOrPlayVideo() {
+    fun pauseOrPlayVideo(play: Boolean) {
         player?.let {
-            if (it.isPlaying) {
-                it.pause()
-            } else {
+            if (play) {
                 it.play()
+            } else {
+                it.pause()
             }
-            isPlay.value = !it.isPlaying
+            isPlay.value = play
         }
     }
 }

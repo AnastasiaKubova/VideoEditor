@@ -4,19 +4,7 @@
     app:startDestination="@id/editorVideoFragment">
 
     <fragment
-        android:id="@+id/audioPickerFragment"
-        android:name="com.example.videoeditor.ui.fragment.picker.audio.AudioPickerFragment"
-        android:label="AudioPickerFragment" >
-        <action
-            android:id="@+id/action_audioPickerFragment_to_editorVideoFragment"
-            app:destination="@id/editorVideoFragment" />
-    </fragment>
-    <fragment
         android:id="@+id/editorVideoFragment"
         android:name="com.example.videoeditor.ui.fragment.editor.EditorVideoFragment"
-        android:label="EditorVideoFragment" >
-        <action
-            android:id="@+id/action_editorVideoFragment_to_audioPickerFragment"
-            app:destination="@id/audioPickerFragment" />
-    </fragment>
+        android:label="EditorVideoFragment" />
 </navigation>

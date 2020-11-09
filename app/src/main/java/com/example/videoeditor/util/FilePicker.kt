@@ -1,7 +1,11 @@
 package com.example.videoeditor.util
 
+import android.content.Intent
 import android.os.Environment
+import android.provider.MediaStore
 import android.text.TextUtils
+import androidx.fragment.app.Fragment
+import com.example.videoeditor.R
 import com.example.videoeditor.enum.FileType
 import com.example.videoeditor.model.FileData
 import com.example.videoeditor.util.Constants.sAudioExtension
@@ -10,64 +14,25 @@ import java.net.URI
 
 object FilePicker {
 
-    val rootFolder = "system"
-    var currentFolderPath: URI = Environment.getRootDirectory().toURI()
-        private set
+    const val PICK_AUDIO = 3
+    private const val SELECT_TYPE = "audio/*"
 
-    init {
-        val url = Preference.getSourceFolder()
-        if (!TextUtils.isEmpty(url)) {
-            currentFolderPath = URI.create(url)
-        }
-    }
+    fun loadAudioFromGallery(fragment: Fragment) {
 
-    fun getFileName(): String {
-        return File(currentFolderPath.path).name
-    }
+        /* Get from files folder. */
+        val getIntent = Intent(Intent.ACTION_GET_CONTENT)
+        getIntent.type = SELECT_TYPE
 
-    fun getLastFolderList(): MutableList<FileData> {
-        return getFilesFromDirectory(currentFolderPath)
-    }
+        /* Get from photo. */
+        val pickIntent = Intent(
+            Intent.ACTION_PICK,
+            MediaStore.Audio.Media.EXTERNAL_CONTENT_URI
+        )
+        pickIntent.type = SELECT_TYPE
 
-    fun getFromSelectFolderList(path: URI): MutableList<FileData> {
-        currentFolderPath = path
-        return getFilesFromDirectory(currentFolderPath)
-    }
-
-    fun getParentFiles(): MutableList<FileData> {
-        if (currentFolderPath.path.trim('/').equals(rootFolder)) {
-            return getFilesFromDirectory(currentFolderPath)
-        }
-        val file = File(currentFolderPath.path)
-        currentFolderPath = URI.create(file.parentFile.absolutePath)
-        return getFilesFromDirectory(currentFolderPath)
-    }
-
-    private fun getFilesFromDirectory(uri: URI): MutableList<FileData> {
-        val directory = File(uri.path)
-        val fullFileList: MutableList<FileData> = mutableListOf()
-        var files: Array<File> = arrayOf()
-        if (!directory.name.equals(rootFolder)) {
-            fullFileList.add(
-                FileData(
-                    FileType.None,
-                    null
-                )
-            )
-        }
-        if (directory.list() != null) {
-            files = directory.listFiles { file ->
-                file != null && (file.isDirectory || (file.extension != null && sAudioExtension.contains(
-                    file.extension
-                )))
-            }
-        }
-        fullFileList.addAll(files.map { file ->
-            FileData(
-                FileType.File,
-                file
-            )
-        })
-        return fullFileList
+        /* Start activity. */
+        val chooserIntent = Intent.createChooser(getIntent, fragment.getString(R.string.select_audio))
+        chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, arrayOf(pickIntent))
+        fragment.startActivityForResult(chooserIntent, PICK_AUDIO)
     }
 }

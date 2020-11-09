@@ -15,7 +15,7 @@ import kotlinx.android.synthetic.main.editor_fragment.*
 import kotlinx.android.synthetic.main.video_controls.*
 
 class EditorVideoFragment: BaseFragment(),
-    BaseFragment.ChangeVideoListener, SoundVideoPanel.OpenAudioPickerListener {
+    BaseFragment.ChangeVideoListener {
 
     private val viewModel by viewModels<EditorVideoViewModel>()
 
@@ -32,10 +32,10 @@ class EditorVideoFragment: BaseFragment(),
 
         /* Init listeners. */
         exo_play.setOnClickListener {
-            viewModel.pauseOrPlayVideo()
+            viewModel.pauseOrPlayVideo(true)
         }
         exo_pause.setOnClickListener {
-            viewModel.pauseOrPlayVideo()
+            viewModel.pauseOrPlayVideo(false)
         }
     }
 
@@ -46,11 +46,12 @@ class EditorVideoFragment: BaseFragment(),
     override fun onResume() {
         super.onResume()
         changeVideoListener = this
-        SoundVideoPanel.openEditPickerListener = this
+        viewModel.pauseOrPlayVideo(true)
     }
 
-    override fun onOpenAudioPickerListener() {
-        findNavController().navigate(R.id.audioPickerFragment)
+    override fun onPause() {
+        super.onPause()
+        viewModel.pauseOrPlayVideo(false)
     }
 
     private fun initObservers() {
@@ -60,8 +61,8 @@ class EditorVideoFragment: BaseFragment(),
             video_view.player = viewModel.prepareVideoPlayer(requireContext())
         }
         val isPlay = Observer<Boolean> { isPlay ->
-            exo_pause.visibility = if (isPlay) View.GONE else View.VISIBLE
-            exo_play.visibility = if (isPlay) View.VISIBLE else View.GONE
+            exo_pause.visibility = if (isPlay) View.VISIBLE else View.GONE
+            exo_play.visibility = if (isPlay) View.GONE else View.VISIBLE
         }
         viewModel.videoUri.observe(viewLifecycleOwner, uriVideo)
         viewModel.isPlay.observe(viewLifecycleOwner, isPlay)
