@@ -1,5 +1,6 @@
 package com.example.videoeditor.ui.panel.sound
 
+import android.Manifest
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -18,7 +19,8 @@ import com.example.videoeditor.util.VideoPicker
 import kotlinx.android.synthetic.main.sounds_video_panel.*
 import java.io.File
 
-class SoundVideoPanel: BaseFragment(), BaseFragment.ConfirmationDialogListener {
+class SoundVideoPanel: BaseFragment(), BaseFragment.ConfirmationDialogListener,
+    BaseFragment.PermissionsChangeListener {
 
     private val viewModel by viewModels<SoundVideoViewModel>()
 
@@ -92,6 +94,10 @@ class SoundVideoPanel: BaseFragment(), BaseFragment.ConfirmationDialogListener {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == FilePicker.PICK_AUDIO && resultCode == AppCompatActivity.RESULT_OK) {
             data?.data?.let {
+                requireActivity().contentResolver.takePersistableUriPermission(
+                    it,
+                    data.flags and Intent.FLAG_GRANT_READ_URI_PERMISSION
+                )
                 viewModel.selectedAudio.value = it
                 prepareSeekBarForSelectedTrack(true)
                 Toast.makeText(requireContext(), getString(R.string.selected_audio_track), Toast.LENGTH_SHORT).show()
@@ -107,11 +113,18 @@ class SoundVideoPanel: BaseFragment(), BaseFragment.ConfirmationDialogListener {
     override fun onResume() {
         super.onResume()
         confirmationDialogListener = this
+        permissionsChangeListener = this
     }
 
-    override fun onPause() {
-        super.onPause()
+    override fun onDetach() {
+        super.onDetach()
         confirmationDialogListener = null
+        permissionsChangeListener = null
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        processRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 
     override fun onDestroy() {
@@ -120,7 +133,8 @@ class SoundVideoPanel: BaseFragment(), BaseFragment.ConfirmationDialogListener {
     }
 
     override fun onPositiveButtonClick() {
-        onBackPressed()
+        val permissions = arrayOf<String>(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        requestPermissions(permissions, WRITE_REQUEST_CODE)
     }
 
     override fun onNegativeButtonClick() {
@@ -140,12 +154,24 @@ class SoundVideoPanel: BaseFragment(), BaseFragment.ConfirmationDialogListener {
     private fun initObservers() {
         val selectedAudio = Observer<Uri> { uri ->
             if (uri != null) {
-                val file = File(uri.path)
+                val file = File(uri.toString())
                 current_selected_track.text = file.name
             } else {
                 current_selected_track.text = ""
             }
         }
         viewModel.selectedAudio.observe(viewLifecycleOwner, selectedAudio)
+    }
+
+    override fun readRequest() {
+    }
+
+    override fun writeRequest() {
+        var convertAudioPath: String? = null
+        if (viewModel.selectedAudio.value != null) {
+            convertAudioPath = viewModel.selectedAudio.value!!.toString()
+        }
+        videoEditorChangeListener?.selectedAudio(convertAudioPath)
+        onBackPressed()
     }
 }

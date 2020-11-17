@@ -3,8 +3,11 @@
     package="com.example.videoeditor">
 
     <uses-permission android:name="android.permission.READ_USER_DICTIONARY"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
-        android:maxSdkVersion="28" />
+        android:maxSdkVersion="30" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"
+        android:maxSdkVersion="30" />
     
     <uses-feature android:name="android.hardware.camera"
         android:required="true" />
@@ -24,7 +27,8 @@
             </intent-filter>
         </activity>
 
-        <service android:name=".service.VideoProcessingService"/>
+        <service android:name=".service.VideoProcessingService"
+                 android:permission="android.permission.BIND_JOB_SERVICE"/>
     </application>
 
 </manifest>

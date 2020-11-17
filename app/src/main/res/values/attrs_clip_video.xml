@@ -1,0 +1,9 @@
+<resources>
+    <declare-styleable name="ClipVideoSeekbar">
+        <attr name="seekbarColor" format="color" />
+        <attr name="seekSideCount" format="enum">
+            <enum name="left" value="1"/>
+            <enum name="right" value="2"/>
+        </attr>
+    </declare-styleable>
+</resources>

@@ -22,7 +22,8 @@ object VideoPicker {
     fun loadVideoFromGallery(fragment: Fragment) {
 
         /* Get from files folder. */
-        val getIntent = Intent(Intent.ACTION_GET_CONTENT)
+        val getIntent = Intent(Intent.ACTION_OPEN_DOCUMENT)
+        getIntent.addCategory(Intent.CATEGORY_OPENABLE)
         getIntent.type = SELECT_TYPE
 
         /* Get from photo. */

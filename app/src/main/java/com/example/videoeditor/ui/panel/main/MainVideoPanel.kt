@@ -1,5 +1,6 @@
 package com.example.videoeditor.ui.panel.main
 
+import android.Manifest
 import android.content.Intent
 import android.os.Bundle
 import android.view.*
@@ -12,7 +13,7 @@ import com.example.videoeditor.util.VideoPicker
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.android.synthetic.main.main_video_panel.*
 
-class MainVideoPanel: BaseFragment() {
+class MainVideoPanel: BaseFragment(), BaseFragment.PermissionsChangeListener {
 
     private lateinit var dialog: BottomSheetDialog
     private lateinit var dialogView: View
@@ -50,6 +51,11 @@ class MainVideoPanel: BaseFragment() {
         inflater.inflate(R.menu.settings_menu, menu)
     }
 
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        processRequestPermissionsResult(requestCode, permissions, grantResults)
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == VideoPicker.REQUEST_VIDEO_CAPTURE && resultCode == AppCompatActivity.RESULT_OK) {
@@ -58,9 +64,25 @@ class MainVideoPanel: BaseFragment() {
             }
         } else if (requestCode == VideoPicker.PICK_VIDEO && resultCode == AppCompatActivity.RESULT_OK) {
             data?.data?.let {
+                requireActivity().contentResolver.takePersistableUriPermission(
+                    it,
+                    data.flags and Intent.FLAG_GRANT_READ_URI_PERMISSION
+                )
                 changeVideoListener?.onSelectVideo(it)
             }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        permissionsChangeListener = this
+    }
+    
+    override fun readRequest() {
+        VideoPicker.loadVideoFromGallery(this)
+    }
+
+    override fun writeRequest() {
     }
 
     private fun initBottomMenu() {
@@ -96,7 +118,8 @@ class MainVideoPanel: BaseFragment() {
 
     private fun showBottomSheetDialog() {
         dialogView.findViewById<TextView>(R.id.select_video).setOnClickListener {
-            VideoPicker.loadVideoFromGallery(this)
+            val permissions = arrayOf<String>(Manifest.permission.READ_EXTERNAL_STORAGE)
+            requestPermissions(permissions, READ_REQUEST_CODE)
             dialog.cancel()
         }
         dialogView.findViewById<TextView>(R.id.create_video).setOnClickListener {
