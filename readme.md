@@ -1,5 +1,4 @@
-[DEPRECATED]
-# This is a sample project to creating "Video Editor".
+# [DEPRECATED] This is a sample project to creating "Video Editor".
 
 ## This project shows how to
 - Select video and audio from galary;
