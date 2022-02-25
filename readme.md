@@ -1,3 +1,4 @@
+[DEPRECATED]
 # This is a sample project to creating "Video Editor".
 
 ## This project shows how to
